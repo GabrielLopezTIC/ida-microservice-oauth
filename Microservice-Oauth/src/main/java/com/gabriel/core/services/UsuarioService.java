@@ -25,7 +25,15 @@ public class UsuarioService implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	    System.out.println("creando usuario con authorities");
 		Optional<Usuario> usuario = cliente.findByEmail(username);
+		
+		if(usuario.isPresent()) {
+		    System.out.println("El usuario encontrado es : "+usuario.get().getEmail());
+		}else {
+		    System.out.println("Usuario no encontrado");
+		}
+		
 		List<GrantedAuthority> authorities = usuario.get().getRoles()
 			.stream()
 			.map(role -> new SimpleGrantedAuthority(role.getRol()))
